@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<script 
+	src="../static/js/customer.js">
+	function redirect(){
+		window.location.href = 'http://localhost:8080/search/';
+	}
+</script>
+<html lang="en">
+    <head>
+        <title>Show Customer</title>
+		<meta charset="utf-8"/>
+        <link rel="icon" href="data:,"/>
+        <link rel="stylesheet" href="../static/css/customer.css"/>
+    </head>
+    <body>
+        <div id="show">
+            <h1>Customer</h1>
+            <dl class="dl-inline">
+                <dt>First name</dt>
+                <dd>{{.FirstName}}</dd>
+                <dt>Last name</dt>
+                <dd>{{.LastName}}</dd>
+                <dt>DOB:</dt>
+                <dd>{{.BirthDate.Format "2006 Jan 02"}}</dd>
+                <dt>Gender</dt>
+                <dd>{{.Gender}}</dd>
+                <dt>Email</dt>
+                <dd>{{.Email}}</dd>
+                <dt>Address</dt>
+                <dd><address>{{.Address}}</address></dd>
+            </dl>
+			<br/>
+            <button type="button" onclick="editCustomer({{.ID}})">
+                Edit Customer
+            </button>
+            <br/>
+            <button id="deleteButton" type="button">
+                Delete Customer
+            </button>
+            <br/>
+            <button type="button" onclick="createNewCustomer()">
+                Create New Customer
+            </button>
+            <br/>
+            <button type="button" onclick="viewAllCustomers()">
+                View All Customers
+            </button>
+        </div>
+    </body>
+</html>
+<script>
+function redirect() {
+	window.location.href = "http://localhost:8080/search/";
+}
+document.getElementById("deleteButton").addEventListener("click", function() {
+	deleteCustomer({{.ID}}, function(){ redirect() });
+}); 
+</script>
+

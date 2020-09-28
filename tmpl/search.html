@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+	    <title>Search Customers</title>
+		<meta charset="utf-8"/>
+        <link rel="icon" href="data:,"/>
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.10.8/css/jquery.dataTables.min.css"/>
+        <link rel="stylesheet" href="../static/css/customer.css"/>
+        <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="https://cdn.datatables.net/1.10.8/js/jquery.dataTables.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.28.0/moment.min.js"></script>
+    </head>
+    <body>
+        <table id="customers" class="display" width="100%">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>FirstName</th>
+                    <th>LastName</th>
+                    <th>DOB</th>
+                    <th>Gender</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+        </table>
+        <br/>
+        <button type="button" onclick="createNewCustomer()">
+            Create New Customer
+        </button>
+    </body>
+</html>
+<script 
+	src="../static/js/customer.js">
+</script>
+<script>
+    function getCustomerData() {
+        fetch("http://localhost:8080/fetchcustomers")
+            .then((response) => {
+                return response.json();
+            })
+            .then((data) => { // Display our JSON in the table
+                const customerData = data.map((customer) => Object.values(customer));
+
+				// Setup the table:
+
+                var table = $("#customers").DataTable({
+                    data: customerData,
+                    columnDefs: [
+                        {
+                            targets: -1,
+                            data: null,
+                            defaultContent: '<button id="view">View</button> / <button id="edit">Edit</button> / <button id="delete">Delete</button>'
+                        }
+                    ],
+                    columns: [
+                        {
+                            searchable: false
+                        },
+                        null,
+                        null,
+                        {
+                            searchable: false,
+                            render: function (data, type, row) {
+                                return moment(data).format("YYYY-MM-DD");
+                            }
+                        }, {
+                            searchable: false
+                        }, {
+                            searchable: false
+                        }, {
+                            searchable: false
+                        }, {
+                            searchable: false
+                        }
+                    ]
+                });
+
+				// Handle View, Edit and Delete: 
+
+                $("#customers tbody").on("click", "button", function (event) {
+                    var data = table.row($(this).parents("tr")).data();
+                    var id = $(event.target).attr("id");
+                    if (id === "edit") { 
+                        editCustomer(data[0]); // Move to Edit page
+                    } else if (id === "view") { 
+                        viewCustomer(data[0]); // Move to View page
+                    } else {
+						// Delete customer
+						const element = $(this); // Necessary for this closure to work...
+						// The second argument here is our callback, to be done after deletion from DB
+                        deleteCustomer(data[0], function(){ animate(element) });
+                    }
+                });
+            })
+            .catch((err) => {
+                console.error(err);
+            });
+    }
+    getCustomerData();
+
+	function animate(element) {
+		element
+			.parents("tr")
+			.animate({
+				backgroundColor: "#003"
+			}, "slow")
+			.animate({
+				opacity: "hide"
+			}, "slow");
+	}
+</script>

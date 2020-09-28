@@ -1,0 +1,45 @@
+html body {
+  margin: 20px;
+  background-color: lightskyblue;
+}
+
+form {
+  padding: 20px 50px;
+}
+
+button,
+input {
+  padding: 2px;
+}
+
+p.parsley-success {
+  color: #468847;
+  background-color: #dff0d8;
+  border: 1px solid #d6e9c6;
+}
+p.parsley-error {
+  color: #b94a48;
+  background-color: #f2dede;
+  border: 1px solid #eed3d7;
+}
+
+#show {
+  text-align: center;
+  font-size: large;
+}
+
+#show button {
+  margin: 5px;
+}
+
+dt {
+  font-weight: bold;
+}
+dd {
+  margin: 0;
+  padding: 0 0 1.5em 0;
+}
+
+#show dl {
+  margin: 20px;
+}
